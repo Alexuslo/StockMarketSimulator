@@ -1,0 +1,74 @@
+[
+  {
+    "text_val": "!!!PAUSE START!!!",
+    "delay_msec": 500
+  },
+  {
+    "text_val": "",
+    "delay_msec": 500
+  },
+  {
+    "text_val": "Hello, dear friend!",
+    "delay_msec": 500
+  },
+  {
+    "text_val": "Here is the game \"Stock Market Simulator\"",
+    "delay_msec": 500
+  },
+  {
+    "text_val": "In it you will be able to see the stock market.",
+    "delay_msec": 500
+  },
+  {
+    "text_val": "All companies are fictional, and any ",
+    "delay_msec": 500
+  },
+  {
+    "text_val": "coincidence can be considered an accident.",
+    "delay_msec": 500
+  },
+  {
+    "text_val": "You can buy stocks and sell.",
+    "delay_msec": 500
+  },
+  {
+    "text_val": "But you need to inspect the briefcase more often, ",
+    "delay_msec": 500
+  },
+  {
+    "text_val": "otherwise everything may end before it starts.",
+    "delay_msec": 500
+  },
+  {
+    "text_val": "Prices on the market change quite quickly.",
+    "delay_msec": 500
+  },
+  {
+    "text_val": "The price change strategy also changes, but less frequently.",
+    "delay_msec": 500
+  },
+  {
+    "text_val": "",
+    "delay_msec": 500
+  },
+  {
+    "text_val": "!IMPOTANT! Enter commands in Latin only!!!",
+    "delay_msec": 500
+  },
+  {
+    "text_val": "",
+    "delay_msec": 500
+  },
+  {
+    "text_val": "Good luck!",
+    "delay_msec": 500
+  },
+  {
+    "text_val": "",
+    "delay_msec": 500
+  },
+  {
+    "text_val": "!!!PAUSE END!!!",
+    "delay_msec": 500
+  }
+]

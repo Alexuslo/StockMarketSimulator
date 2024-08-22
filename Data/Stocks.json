@@ -1,0 +1,37 @@
+[ 
+  {
+    "text_val": "pear",
+    "price": 120.0,
+    "strategy": "random"
+  },
+  {
+    "text_val": "hardsoft",
+    "price": 250.0,
+    "strategy": "trend"
+  },
+  {
+    "text_val": "abibas",
+    "price": 300.0,
+    "strategy": "random"
+  },
+  {
+    "text_val": "poshuk",
+    "price": 200.0,
+    "strategy": "trend"
+  },
+  {
+    "text_val": "lacococa",
+    "price": 280.0,
+    "strategy": "random"
+  },
+  {
+    "text_val": "goodzon",
+    "price": 200.0,
+    "strategy": "trend"
+  },
+  {
+    "text_val": "contora",
+    "price": 80.0,
+    "strategy": "random"
+  }
+]

@@ -1,0 +1,17 @@
+[
+  {
+    "text_val": "pear",
+    "quantity": 10,
+    "price": 120.0
+  },
+  {
+    "text_val": "contora",
+    "quantity": 5,
+    "price": 250.0
+  },
+  {
+    "text_val": "goodzon",
+    "quantity": 2,
+    "price": 300.0
+  }
+]

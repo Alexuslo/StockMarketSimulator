@@ -14,7 +14,6 @@ class CStock;
 
 class CPortfolio : public CObserver
 {
-	friend class CStockMarketModel;
 
 	class CPortfolioStockData 
 	{
@@ -57,13 +56,13 @@ class CPortfolio : public CObserver
 
 	std::vector<CPortfolioStockData> m_Stocks;
 
-	float m_Cash = START_PORTFOLIO_CASH;
-	float m_CashDelta = 0.0f;
-	float m_MarketValue = 0.0f;
-
-	void InitStartStock(std::shared_ptr<CStock> pStockRef, int Quantity, float Price);
+	double m_Cash = START_PORTFOLIO_CASH;
+	double m_CashDelta = 0.0;
+	double m_MarketValue = 0.0;
 
 public:
+
+	void InitStartStock(std::shared_ptr<CStock> pStockRef, int Quantity, float Price);
 
 	explicit CPortfolio(CStockMarketModel &StockMarketModel);
 	
@@ -78,8 +77,9 @@ public:
 
 	virtual void Notify() override;
 
-	float GetCashDelta() const;
-	float GetMarketValue() const;
+	double GetCash() const;
+	double GetCashDelta() const;
+	double GetMarketValue() const;
 
 	void Reset();
 

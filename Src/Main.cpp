@@ -1,11 +1,20 @@
 #include "Application.h"
+#include <iostream>
 
 int main() 
 {
-	auto &Application = CApplication::GetInstance();
+	try
+	{
+		auto &Application = CApplication::GetInstance();
 
-	Application.Init();
-	Application.Run();
+		Application.Init();
+		Application.Run();
+	}
+	catch (const std::exception &e)
+	{
+		std::cerr << "Fatal error: " << e.what() << std::endl;
+		return 1;
+	}
 
 	return 0;
 }

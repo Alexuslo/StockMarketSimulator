@@ -83,14 +83,27 @@ std::string CCommandManager::InputUpdater(bool bNumber)
 			if (CApplication::GetInstance().IsTutorialPaused())
 				continue;
 
-			if (Code == '\b' || static_cast<int>(Code) == 83 || static_cast<int>(Code) == 127)
+			if (Code == '\b' || static_cast<int>(Code) == 127)
 			{
 				if (!InputString.empty())
 				{
+					if (InputString.back() == '.')
+						HasDecimalPoint = false;
+
 					InputString.pop_back();
 
 					m_StockMarketController.SetInputText(InputString);
 				}
+			}
+			else
+			if (static_cast<int>(Code) == 27) // Escape
+			{
+				InputString.clear();
+				HasDecimalPoint = false;
+
+				m_StockMarketController.SetInputText(InputString);
+
+				return InputString;
 			}
 			else
 			if (Code == '\r')

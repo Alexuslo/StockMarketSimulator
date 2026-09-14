@@ -4,7 +4,7 @@
 #include <string>
 #include <map>
 
-constexpr float START_PORTFOLIO_CASH = 10'000.0f;
+constexpr double START_PORTFOLIO_CASH = 10'000.0;
 
 constexpr int MAX_MARKET_STOCK_QUANTITY = 10'000;
 constexpr int MAX_SECOND_FOR_UPDATE_PRICE = 5;
@@ -92,5 +92,8 @@ extern const std::string RedColor;
 extern const std::string GreenColor;
 extern const std::string YellowColor;
 extern const std::string BlueColor;
+
+extern std::map<EStrategyType, std::string> g_StrategyTypeEnamToNameString;
+extern std::map<std::string, EStrategyType> g_NameStringToStrategyTypeEnam;
 
 #endif // DEFINITIONS_H

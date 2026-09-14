@@ -22,6 +22,9 @@ struct CStockPackage
 
 	int m_Quantity = 0;
 
+	CStockPackage(std::shared_ptr<CStock> pStock, int Quantity)
+		: m_pStock(std::move(pStock)), m_Quantity(Quantity) {}
+
 	void ChangeQuantity(int Quantity);
 	bool IsPresent() const;
 };
@@ -49,18 +52,18 @@ public:
 	void UpdatePrices();
 	void UpdateStrategy();
 
-	const std::vector<CStockPackage> &GetStockPackages() const;
+	std::vector<CStockPackage> GetStockPackages() const;
 
 	CPortfolio &GetPortfolio();
 	const CPortfolio &GetPortfolio() const;
 
 	CLogicUpdater &GetLogicUpdater();
 
-	std::tuple<std::shared_ptr<CStock>, int, float> Buy(const std::string &Name, int Quantity, float Price, float &Cash, bool bFree);
-	void Sell(const std::string &Name, int Quantity, float Price, float &Cash, bool bFree);
+	std::tuple<std::shared_ptr<CStock>, int, float> Buy(const std::string &Name, int Quantity, float Price, double &Cash, bool bFree);
+	void Sell(const std::string &Name, int Quantity, float Price, double &Cash, bool bFree);
 
 	void AddLogMessage(const std::string &LogMessage);
-	const std::deque<std::string> &GetLogStrings() const;
+	std::deque<std::string> GetLogStrings() const;
 
 	void SetInputHint(const std::string &InputHint);
 	const std::string &GetInputHint() const;

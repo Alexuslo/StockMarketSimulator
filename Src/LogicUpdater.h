@@ -4,7 +4,6 @@
 #include <thread>
 #include <chrono>
 #include <atomic>
-#include <condition_variable>
 #include "Observer.h"
 
 class CStockMarketModel;

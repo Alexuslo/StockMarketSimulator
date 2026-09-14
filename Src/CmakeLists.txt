@@ -3,12 +3,28 @@ project(StockMarketSimulator VERSION 1.0 LANGUAGES CXX)
 
 set(CMAKE_INCREMENTAL_LINK FALSE)
 set(CMAKE_CXX_STANDARD 17)
+set(CMAKE_CXX_STANDARD_REQUIRED ON)
 
 set(CMAKE_RUNTIME_OUTPUT_DIRECTORY ${CMAKE_SOURCE_DIR}/..)
 set(CMAKE_LIBRARY_OUTPUT_DIRECTORY ${CMAKE_SOURCE_DIR}/..)
 set(CMAKE_ARCHIVE_OUTPUT_DIRECTORY ${CMAKE_SOURCE_DIR}/..)
 
-file(GLOB SOURCES "*.cpp")
+set(SOURCES
+    Application.cpp
+    Command.cpp
+    Definitions.cpp
+    HelperFuncs.cpp
+    Info.cpp
+    LogicUpdater.cpp
+    Main.cpp
+    Observer.cpp
+    Portfolio.cpp
+    PricingStrategy.cpp
+    Stock.cpp
+    StockMarketController.cpp
+    StockMarketModel.cpp
+    StockMarketView.cpp
+)
 
 add_executable(StockMarketSimulator ${SOURCES})
 

@@ -11,7 +11,7 @@
 
 class CApplication 
 {
-	std::atomic<bool> m_bTutorialStarted;
+	std::atomic<bool> m_bTutorialPaused;
 
 	CSettings<CPortfolioStockInfo> m_PortfolioInfos;
 	CSettings<CStockInfo> m_StockInfos;

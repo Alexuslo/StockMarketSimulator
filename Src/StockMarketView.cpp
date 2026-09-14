@@ -1,6 +1,6 @@
 #include "StockMarketView.h"
 #include "Stock.h"
-#include "deque"
+#include <deque>
 #include "HelperFuncs.h"
 
 CStockMarketView::CStockMarketView(const CStockMarketModel &StockMarketModel) :

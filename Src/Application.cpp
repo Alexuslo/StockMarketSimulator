@@ -15,7 +15,7 @@ void CApplication::Init()
 	m_TutorialInfos.LoadFromJSON("Data/Tutorial.json");
 }
 
-void::CApplication::AttachDependencies(CStockMarketModel &m, CStockMarketView &v, CStockMarketController &c)
+void CApplication::AttachDependencies(CStockMarketModel &m, CStockMarketView &v, CStockMarketController &c)
 {
 	m.GetLogicUpdater().Attach(&v);
 	m.GetLogicUpdater().Attach(&m.GetPortfolio());
@@ -36,8 +36,10 @@ void CApplication::Run()
 	View.Run();
 	Controller.Run();
 
+	Model.GetLogicUpdater().Stop();
+
 	system("cls");
-	std::cout << "GOD BYY!";
+	std::cout << "GOOD BYE!";
 }
 
 const std::vector<CPortfolioStockInfo> &CApplication::GetPortfolioInfos() const
@@ -56,10 +58,10 @@ const std::vector<CTutorialInfo> &CApplication::GetTutorialInfos() const
 
 void CApplication::SetTutorialPaused(bool bTutorialPaused)
 {
-	m_bTutorialStarted.store(bTutorialPaused);
+	m_bTutorialPaused.store(bTutorialPaused);
 }
 
 bool CApplication::IsTutorialPaused() const
 {
-	return m_bTutorialStarted.load();
+	return m_bTutorialPaused.load();
 }

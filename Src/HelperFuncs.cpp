@@ -9,31 +9,23 @@ std::unique_ptr<CPricingStrategyBase> CreateStrategy(const std::string &Strategy
 	if (StrategyName == "trend")
 		return std::make_unique<CTrendPricingStrategy>(0.01f);
 
-	throw std::runtime_error("CStockMarketModel::CStockMarketModel() {lambda CreateStrategy(...)} - Неизвестная стратегия - " + StrategyName);
+	throw std::runtime_error("CreateStrategy - unknown strategy: " + StrategyName);
 }
 
-
-// You can use unordered_map to improve search performance if the table is large
 const std::string &GetNameStringByStrategyTypeEnum(EStrategyType StrategyType)
 {
-	static std::map<EStrategyType, std::string> StrategyTypeEnamToNameString =
-	{
-		{EStrategyType::None, "none"},
-		{EStrategyType::Random, "random"},
-		{EStrategyType::Trend, "trend"}
-	};
+	const auto It = g_StrategyTypeEnamToNameString.find(StrategyType);
+	if (It != g_StrategyTypeEnamToNameString.end())
+		return It->second;
 
-	return StrategyTypeEnamToNameString[StrategyType];
+	return g_StrategyTypeEnamToNameString[EStrategyType::None];
 }
 
 EStrategyType GetStrategyTypeEnumByNameString(const std::string &Name)
 {
-	static std::map<std::string, EStrategyType> NameStringToStrategyTypeEnam =
-	{
-		{"none", EStrategyType::None},
-		{"random", EStrategyType::Random},
-		{"trend", EStrategyType::Trend}
-	};
+	const auto It = g_NameStringToStrategyTypeEnam.find(Name);
+	if (It != g_NameStringToStrategyTypeEnam.end())
+		return It->second;
 
-	return NameStringToStrategyTypeEnam[Name];
+	return EStrategyType::None;
 }

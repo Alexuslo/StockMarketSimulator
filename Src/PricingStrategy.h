@@ -5,7 +5,7 @@
 #include <chrono>
 #include "Definitions.h"
 
-class CPricingStrategyBase abstract
+class CPricingStrategyBase
 {
 
 protected:

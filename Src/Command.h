@@ -141,6 +141,10 @@ inline T CCommandBase::ValidateInputNumber(const std::string &InputText, const s
 	while (true)
 	{
 		auto Text = m_pCommandManager->Input(InputText, LogText, true);
+
+		if (Text.empty())
+			return T{};
+
 		std::stringstream StringStream(Text);
 		StringStream >> Number;
 

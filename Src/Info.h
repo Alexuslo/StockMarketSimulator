@@ -4,7 +4,6 @@
 #include "../libs/nlohmann/json.hpp"
 #include <fstream>
 #include <optional>
-#include <iostream>
 
 using json = nlohmann::json;
 
@@ -92,9 +91,9 @@ public:
 			for (const auto &Item : Json)
 				m_Infos.emplace_back(Item);
 		}
-		catch (const json::parse_error &e)
+		catch (const json::exception &e)
 		{
-			throw std::runtime_error("JSON parse error: " + std::string(e.what()));
+			throw std::runtime_error("JSON error in " + std::string(JSONName) + ": " + e.what());
 		}
 	}
 

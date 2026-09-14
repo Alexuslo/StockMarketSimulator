@@ -1,0 +1,44 @@
+# Build directories
+build/
+Debug/
+Release/
+x64/
+x86/
+out/
+
+# CMake generated files
+CMakeFiles/
+CMakeCache.txt
+cmake_install.cmake
+*.vcxproj
+*.vcxproj.filters
+*.vcxproj.user
+*.sln
+*.suo
+*.opensdf
+*.sdf
+*.db
+*.opendb
+ipch/
+
+# Compiled objects
+*.obj
+*.o
+*.pdb
+*.ilk
+*.log
+*.tlog
+*.lastbuildstate
+*.manifest
+*.res
+*.pch
+*.ipdb
+*.iobj
+
+# Executables
+*.exe
+*.dll
+*.lib
+
+# VS directories
+.vs/

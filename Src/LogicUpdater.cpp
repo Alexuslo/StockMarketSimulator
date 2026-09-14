@@ -58,7 +58,6 @@ void CLogicUpdater::Run()
 			{
 				m_StockMarketModel.UpdatePrices();
 				Notify(EDrawFlagFlags::DrawStockFlag);
-				Notify();
 				NextPriceUpdateTime = Now + std::chrono::seconds(MAX_SECOND_FOR_UPDATE_PRICE);
 			}
 
@@ -67,7 +66,6 @@ void CLogicUpdater::Run()
 			{
 				m_StockMarketModel.UpdateStrategy();
 				Notify(EDrawFlagFlags::DrawStockFlag);
-				Notify();
 				NextStrategyUpdateTime = Now + std::chrono::seconds(MAX_SECOND_FOR_UPDATE_STRATEGY);
 			}
 

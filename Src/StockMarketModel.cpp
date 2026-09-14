@@ -13,7 +13,7 @@ CStockMarketModel::CStockMarketModel() :
 	for (const auto &StockInfo : CApplication::GetInstance().GetStockInfos())
 	{
 		auto pStock = std::make_shared<CStock>(StockInfo.m_Text, StockInfo.m_Price, std::move(::CreateStrategy(StockInfo.m_StartStrategy)));
-		m_StockPackages.emplace_back(CStockPackage{ pStock, MAX_MARKET_STOCK_QUANTITY });
+		m_StockPackages.emplace_back(pStock, MAX_MARKET_STOCK_QUANTITY);
 	}
 
 	// filling a portfolio with stocks
@@ -34,10 +34,7 @@ CStockMarketModel::CStockMarketModel() :
 	m_LogicUpdater.Run();
 }
 
-CStockMarketModel::~CStockMarketModel()
-{
-
-}
+CStockMarketModel::~CStockMarketModel() = default;
 
 void CStockMarketModel::UpdatePrices()
 {
@@ -64,12 +61,12 @@ void CStockMarketModel::UpdateStrategy()
 	}
 
 	if (!bAnyUpdate)
-		AddLogMessage("TThe strategies have not changed");
+		AddLogMessage("The strategies have not changed");
 
 	AddLogMessage("--------------------------------");
 }
 
-const std::vector<CStockPackage> &CStockMarketModel::GetStockPackages() const
+std::vector<CStockPackage> CStockMarketModel::GetStockPackages() const
 {
 	return m_StockPackages;
 }
@@ -89,24 +86,39 @@ CLogicUpdater &CStockMarketModel::GetLogicUpdater()
 	return m_LogicUpdater;
 }
 
-std::tuple<std::shared_ptr<CStock>, int, float> CStockMarketModel::Buy(const std::string &Name, int Quantity, float Price, float &Cash, bool bFree)
+std::tuple<std::shared_ptr<CStock>, int, float> CStockMarketModel::Buy(const std::string &Name, int Quantity, float Price, double &Cash, bool bFree)
 {
 	const auto It = std::find_if(m_StockPackages.begin(), m_StockPackages.end(), [&Name](const auto &StockPackage) {
 
 		return Name == StockPackage.m_pStock->GetName();
 	});
 
-	if (It == m_StockPackages.end())// An attempt to buy something that is not there.
+	if (It == m_StockPackages.end())
+	{
+		AddLogMessage("Stock \"" + Name + "\" not found on market.");
 		return { nullptr, 0, 0.0f };
+	}
 
-	float BestPrice = std::max(Price, It->m_pStock->GetPrice());// The buyer can offer more than the market value
+	float MarketPrice = It->m_pStock->GetPrice();
+	float BestPrice = std::max(Price, MarketPrice);
 
-	int PossibleQuantity = bFree ? Quantity : std::min(Quantity, It->m_Quantity);// we take into account the quantity on the market
-
-	if (PossibleQuantity <= 0 || BestPrice > Cash || PossibleQuantity < Quantity)
+	if (BestPrice <= 0.0f)
 	{
 		AddLogMessage("Incorrect operation.");
+		return { nullptr, 0, 0.0f };
+	}
 
+	int PossibleQuantity = bFree ? Quantity : std::min(Quantity, It->m_Quantity);
+
+	if (PossibleQuantity <= 0 || PossibleQuantity < Quantity)
+	{
+		AddLogMessage("Incorrect operation.");
+		return { nullptr, 0, BestPrice };
+	}
+
+	if (!bFree && BestPrice > Cash)
+	{
+		AddLogMessage("Insufficient cash.");
 		return { nullptr, 0, BestPrice };
 	}
 
@@ -119,9 +131,9 @@ std::tuple<std::shared_ptr<CStock>, int, float> CStockMarketModel::Buy(const std
 	}
 	else
 	{
-		PossibleQuantity = std::min(PossibleQuantity, static_cast<int>(Cash / BestPrice));// we take into account the purchasing power
+		PossibleQuantity = std::min(PossibleQuantity, static_cast<int>(Cash / BestPrice));
 
-		Cash -= BestPrice * static_cast<float>(PossibleQuantity);
+		Cash -= BestPrice * static_cast<double>(PossibleQuantity);
 
 		It->ChangeQuantity(-PossibleQuantity);
 
@@ -136,17 +148,27 @@ std::tuple<std::shared_ptr<CStock>, int, float> CStockMarketModel::Buy(const std
 	return { It->m_pStock, PossibleQuantity, BestPrice };
 }
 
-void CStockMarketModel::Sell(const std::string &Name, int Quantity, float Price, float &Cash, bool bFree)
+void CStockMarketModel::Sell(const std::string &Name, int Quantity, float Price, double &Cash, bool bFree)
 {
 	const auto It = std::find_if(m_StockPackages.begin(), m_StockPackages.end(), [&Name](const auto &StockPackage) {
 
 		return Name == StockPackage.m_pStock->GetName();
 	});
 
-	if (It == m_StockPackages.end())// An attempt to sell something that doesn't exist.
+	if (It == m_StockPackages.end())
+	{
+		AddLogMessage("Stock \"" + Name + "\" not found on market.");
 		return;
+	}
 
-	float BestPrice = std::min(std::clamp(Price, 0.0f, Price), It->m_pStock->GetPrice());// The buyer can offer less than the market price
+	if (Quantity <= 0)
+	{
+		AddLogMessage("Incorrect operation.");
+		return;
+	}
+
+	float MarketPrice = It->m_pStock->GetPrice();
+	float BestPrice = std::min(std::clamp(Price, 0.0f, MarketPrice), MarketPrice);
 
 	std::string LogMessage;
 
@@ -157,7 +179,7 @@ void CStockMarketModel::Sell(const std::string &Name, int Quantity, float Price,
 	}
 	else
 	{
-		Cash += BestPrice * static_cast<float>(std::clamp(Quantity, 0, Quantity));
+		Cash += BestPrice * static_cast<double>(Quantity);
 
 		It->ChangeQuantity(Quantity);
 
@@ -180,9 +202,9 @@ void CStockMarketModel::AddLogMessage(const std::string &String)
 	Notify(EDrawFlagFlags::DrawLogFlag);
 }
 
-const std::deque<std::string> &CStockMarketModel::GetLogStrings() const
-{ 
-	return m_LogQueue; 
+std::deque<std::string> CStockMarketModel::GetLogStrings() const
+{
+	return m_LogQueue;
 }
 
 const std::string &CStockMarketModel::GetInputText() const
@@ -211,9 +233,6 @@ void CStockMarketModel::SetInputText(const std::string &InputText)
 
 void CStockPackage::ChangeQuantity(int Quantity)
 {
-	//because selling/buying affects supply/demand
-	//we change not only the number of shares on the market, but also the price, but the price depends only on the ratio of quantities (simplified)
-
 	int ResultQuantity = m_Quantity + Quantity;
 
 	if (ResultQuantity > 0 && m_Quantity > 0)

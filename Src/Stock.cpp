@@ -1,5 +1,3 @@
-#include <array>
-
 #include "Stock.h"
 #include "Definitions.h"
 #include "HelperFuncs.h"
@@ -40,7 +38,7 @@ void CStock::SetPricingStrategy(std::unique_ptr<CPricingStrategyBase> &&pStrateg
 {
 	std::lock_guard<std::mutex> Lock(m_Mutex);
 
-	m_pPricingStrategy = move(pStrategy);
+	m_pPricingStrategy = std::move(pStrategy);
 }
 
 void CStock::UpdatePrice()
@@ -48,7 +46,7 @@ void CStock::UpdatePrice()
 	std::lock_guard<std::mutex> Lock(m_Mutex);
 
 	if (m_pPricingStrategy)
-		m_Price = m_pPricingStrategy->CalculateNewPrice(m_Price);
+		m_Price = std::max(0.0f, m_pPricingStrategy->CalculateNewPrice(m_Price));
 }
 
 bool CStock::UpdateStrategy()
@@ -58,16 +56,12 @@ bool CStock::UpdateStrategy()
 	if (std::uniform_real_distribution<>(1, 100)(Generator) > PERCENT_TO_CHANGE_STRATEGY)
 		return false;
 
-	std::array<std::string, static_cast<size_t>(EStrategyType::TotalStrategy)> Names;
-
 	EStrategyType StrategyType = m_pPricingStrategy ? m_pPricingStrategy->GetPriceStrategyType() : EStrategyType::Random;
 	StrategyType++;
 
 	std::string NewName = ::GetNameStringByStrategyTypeEnum(StrategyType);
 
- 	m_pPricingStrategy = nullptr;
- 
- 	m_pPricingStrategy = std::move(::CreateStrategy(NewName));
+	m_pPricingStrategy = std::move(::CreateStrategy(NewName));
 
 	return true;
 }
